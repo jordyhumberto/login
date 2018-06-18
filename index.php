@@ -10,19 +10,18 @@
 	if(!empty($_POST))
 	{
 		$usuario = mysqli_real_escape_string($mysqli,$_POST['usuario']);
-		$password = mysqli_real_escape_string($mysqli,$_POST['password']);
+		$password = mysqli_real_escape_string($mysqli,$_POST['clave']);
 		$error = '';
 		
-		$sha1_pass = sha1($password);
-		
-		$sql = "SELECT id, id_tipo FROM usuarios WHERE usuario = '$usuario' AND password = '$sha1_pass'";
+		$sql = "SELECT Id_Usuario,Usuario,Clave,Estado FROM usuarios WHERE Usuario = '$usuario' AND Clave = '$password' AND Estado='01'";
+		//, id_tipo
 		$result=$mysqli->query($sql);
 		$rows = $result->num_rows;
 		
 		if($rows > 0) {
 			$row = $result->fetch_assoc();
-			$_SESSION['id_usuario'] = $row['id'];
-			$_SESSION['tipo_usuario'] = $row['id_tipo'];
+			$_SESSION['id_usuario'] = $row['Id_Usuario'];
+			//$_SESSION['tipo_usuario'] = $row['id_tipo'];
 			
 			header("location: welcome.php");
 			} else {
@@ -43,7 +42,7 @@
     <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST" autocomplete="off"> 
 		<div><label>Usuario:</label><input id="usuario" name="usuario" type="text" ></div>
 		<br />
-		<div><label>Password:</label><input id="password" name="password" type="password"></div>
+		<div><label>Password:</label><input id="clave" name="clave" type="password"></div>
 		<br />
 		<div><input name="login" type="submit" value="login"></div> 
 	</form> 
